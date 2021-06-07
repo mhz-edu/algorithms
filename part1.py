@@ -31,10 +31,6 @@ def karatsuba_mult(x, y):
         s =  step1 * pow(10, 2 * half) + (step3 * pow(10, half)) + step2
         return s
 
-# print(karatsuba_mult('3141592653589793238462643383279502884197169399375105820974944592',
-#                      '2718281828459045235360287471352662497757247093699959574966967627'))
-
-# print(karatsuba_mult('1234','5678'))
 
 def inversions_number(l):
     def inversions_split(left, right, n):
@@ -78,7 +74,3 @@ def load_list(path):
         for line in f:
             out.append(int(line))
     return out
-
-test = [1, 3, 5, 2, 4, 6]
-print(inversions_number(test))
-print(inversions_number(load_list('IntegerArray.txt')))
