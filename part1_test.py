@@ -1,5 +1,5 @@
 import pytest
-from part1 import karatsuba_mult, recursive_mult, inversions_number
+from part1 import comparison_number, first_element, karatsuba_mult, last_element, median_of_three, partition, quick_sort, recursive_mult, inversions_number
 
 
 class TestRecursive:
@@ -56,3 +56,30 @@ class TestInversions:
     
     def test_inversions_number4(self):
         assert inversions_number([2,1]) == 1
+
+class TestPartitions:
+    def test_first_element(self):
+        assert partition([3,8,2,5,1,4,7,6], first_element) == ([2, 1], [3], [5, 8, 4, 7, 6])
+
+    def test_last_element(self):
+        assert partition([3,8,2,5,1,4,7,6], last_element) == ([3, 2, 5, 1, 4], [6], [8, 7])
+
+class TestQuickSort:
+    def test_one_element_list(self):
+        assert quick_sort([123]) == [123]
+
+    def test_two_element_list(self):
+        assert quick_sort([34, 12]) == [12, 34]
+
+    def test_more_than_two_elem_list(self):
+        assert quick_sort([3,8,2,5,1,4,7,6]) == [1,2,3,4,5,6,7,8]
+
+class TestComparisonNumber:
+    def test_first_element(self):
+        assert comparison_number([3,8,2,5,1,4,7,6], first_element) == 15
+
+    def test_last_element(self):
+        assert comparison_number([3,8,2,5,1,4,7,6], last_element) == 15
+
+    def test_median_three(self):
+        assert comparison_number([3,8,2,5,1,4,7,6], median_of_three) == 13

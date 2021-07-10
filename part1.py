@@ -68,6 +68,49 @@ def inversions_number(l):
     a, b = recursive_call(l)
     return b
 
+def partition(array, pivot_func):
+        if len(array) == 1:
+            return (array, [], [])
+        pivot_index = pivot_func(array)
+        pivot = array.pop(pivot_index)
+        i = 0
+        for j in range(len(array)):
+            if array[j] < pivot:
+                array[j], array[i] = array[i], array[j]
+                i = i + 1
+        return (array[:i], [pivot], array[i:])
+
+def quick_sort(l):
+    if len(l) <= 1:
+        return l
+    else:
+        less_pivot, pivot, greater_pivot = partition(l, median_of_three)
+        return quick_sort(less_pivot) + pivot + quick_sort(greater_pivot)
+
+
+def first_element(l):
+    return 0
+
+def last_element(l):
+    return len(l) - 1
+
+def median_of_three(l):
+    if len(l) < 3:
+        return 0
+    else:
+        temp = [l[0], l[(len(l)-1)//2], l[-1]]
+        temp.sort()
+        return l.index(temp[1])
+
+def comparison_number(l, func=first_element):
+    if len(l) <= 1:
+        return 0
+    else:
+        count = len(l) - 1
+        less_pivot, pivot, greater_pivot = partition(l, func)
+        return count + comparison_number(less_pivot, func) + comparison_number(greater_pivot, func)
+
+
 def load_list(path):
     out = []
     with open(path, 'r') as f:
