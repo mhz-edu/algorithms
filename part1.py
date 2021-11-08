@@ -110,6 +110,68 @@ def comparison_number(l, func=first_element):
         less_pivot, pivot, greater_pivot = partition(l, func)
         return count + comparison_number(less_pivot, func) + comparison_number(greater_pivot, func)
 
+def dist(pair):
+    p1, p2 = pair
+    return ((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)**0.5
+
+
+def closest_split_pair(qx, rx, qy, ry, delta):
+    sy = []
+    middlex = qx[-1][0]
+    for point in (qy + ry):
+        if abs(point[0] - middlex) <= delta:
+            sy.append(point)
+    best = delta
+    best_pair = ((30,30), (-30, -30))
+    for i in range(len(sy) - 1):
+        for j in range(1, min(7, len(sy) - i)):
+            if dist((sy[i], sy[i+j])) < best:
+                best = dist((sy[i], sy[i+j]))
+                best_pair = (sy[i], sy[i+j])
+    return best_pair
+        
+
+def closest_pair_three(l):
+    pairs = [(l[0], l[1]), (l[1], l[2]), (l[0], l[2])]
+    dists = list(map(dist, pairs))
+    ind = dists.index(min(dists))
+    return pairs[ind]
+
+def closest_pair_core(px, py):
+    if len(px) == 2:
+        return (px[0], px[1])
+    elif len(px) == 3:
+        return closest_pair_three(px)
+    else:
+        middlex = len(px) // 2
+        x_in_middlex = px[middlex][0]
+        qx = px[:middlex]
+        rx = px[middlex:]
+        qy = []
+        ry = []
+        for point in py:
+            if point[0] < x_in_middlex:
+                qy.append(point)
+            else:
+                ry.append(point)
+        left_pair = closest_pair_core(qx, qy)
+        right_pair = closest_pair_core(rx, ry)
+        delta = min(dist(left_pair), dist(right_pair))
+        split_pair = closest_split_pair(qx, rx, qy, ry, delta)
+        
+        pairs = [left_pair, right_pair, split_pair]
+        dists = list(map(dist, pairs))
+        ind = dists.index(min(dists))
+        return pairs[ind]
+
+def closest_pair(points):
+    px = sorted(points, key=lambda p: p[0])
+    py = sorted(points, key=lambda p: p[1])
+    return closest_pair_core(px, py)
+
+print(closest_pair([(2,2),(2,8),(5,5),(6,3),(6,7),(7,4),(7,9)]))
+# print(closest_pair_three([(2,2),(2,8),(5,5)]))
+
 
 def load_list(path):
     out = []

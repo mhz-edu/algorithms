@@ -1,5 +1,5 @@
 import pytest
-from part1 import comparison_number, first_element, karatsuba_mult, last_element, median_of_three, partition, quick_sort, recursive_mult, inversions_number
+from part1 import comparison_number, first_element, karatsuba_mult, last_element, median_of_three, partition, quick_sort, recursive_mult, inversions_number, closest_pair
 
 
 class TestRecursive:
@@ -83,3 +83,13 @@ class TestComparisonNumber:
 
     def test_median_three(self):
         assert comparison_number([3,8,2,5,1,4,7,6], median_of_three) == 13
+
+class TestClosestPair:
+    def test_two_points(self):
+        assert closest_pair([(-1,-1), (1,1)]) == ((-1,-1), (1,1))
+    
+    def test_three_points(self):
+        assert closest_pair([(-1,-1), (0.5, 0.5), (1,1)]) == ((0.5, 0.5), (1,1))
+    
+    def test_five_points(self):
+        assert closest_pair([(-1,-1), (0.5, 0.5), (1,1), (-1, 1), (1,-1)]) == ((0.5, 0.5), (1,1))
