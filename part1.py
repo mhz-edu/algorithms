@@ -1,3 +1,5 @@
+import random
+
 def recursive_mult(x, y):
     half_x = int(len(x) / 2)
     half_y = int(len(y) / 2)
@@ -169,8 +171,23 @@ def closest_pair(points):
     py = sorted(points, key=lambda p: p[1])
     return closest_pair_core(px, py)
 
-print(closest_pair([(2,2),(2,8),(5,5),(6,3),(6,7),(7,4),(7,9)]))
-# print(closest_pair_three([(2,2),(2,8),(5,5)]))
+
+def random_pivot(l):
+    return random.randint(0, len(l)-1)
+
+def randomized_select(l, order):
+    if len(l) == 1:
+        return l[0]
+    else:
+        less_pivot, pivot, greater_pivot = partition(l, random_pivot)
+        if len(less_pivot) == order - 1:
+            return pivot[0]
+        elif len(less_pivot) > order - 1:
+            return randomized_select(less_pivot, order)
+        else:
+             return randomized_select(greater_pivot, order)
+
+randomized_select([3,8,2,5,1,4,7,6], 2)
 
 
 def load_list(path):

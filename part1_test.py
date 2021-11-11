@@ -1,5 +1,5 @@
 import pytest
-from part1 import comparison_number, first_element, karatsuba_mult, last_element, median_of_three, partition, quick_sort, recursive_mult, inversions_number, closest_pair
+from part1 import comparison_number, first_element, karatsuba_mult, last_element, median_of_three, partition, quick_sort, randomized_select, recursive_mult, inversions_number, closest_pair
 
 
 class TestRecursive:
@@ -93,3 +93,13 @@ class TestClosestPair:
     
     def test_five_points(self):
         assert closest_pair([(-1,-1), (0.5, 0.5), (1,1), (-1, 1), (1,-1)]) == ((0.5, 0.5), (1,1))
+
+class TestRandomizedSelect:
+    def test_select1(self):
+        assert randomized_select([3,8,2,5,1,4,7,6], 2) == 2
+    
+    def test_select2(self):
+        assert randomized_select([3,8,2,5,1,4,7,6], 1) == 1
+    
+    def test_select3(self):
+        assert randomized_select([3,8,2,5,1,4,7,6], 8) == 8
