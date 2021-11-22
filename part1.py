@@ -185,7 +185,32 @@ def randomized_select(l, order):
         elif len(less_pivot) > order - 1:
             return randomized_select(less_pivot, order)
         else:
-             return randomized_select(greater_pivot, order)
+             return randomized_select(greater_pivot, (order - 1) - len(less_pivot))
+
+def median_of_median(l):
+    median_array = []
+    if len(l) < 5:
+        median_array.append(sorted(l)[len(l)//2])
+    else:
+        d = 1 if (len(l) % 5 != 0) else 0
+        for i in range(d + (len(l) // 5)):
+            median_array.append(sorted(l[(i * 5):(i + 1) * 5])[2])
+    return median_array
+
+def deterministic_select(l, order):
+    if len(l) == 1:
+        return l[0]
+    else:
+        c = median_of_median(l)
+        selected_pivot = deterministic_select(c, len(l)//10)
+        pivot_index = l.index(selected_pivot)
+        less_pivot, pivot, greater_pivot = partition(l, lambda x: pivot_index)
+        if len(less_pivot) == (order - 1):
+            return pivot[0]
+        elif len(less_pivot) > (order - 1):
+            return deterministic_select(less_pivot, order)
+        else:
+             return deterministic_select(greater_pivot, (order-1) - len(less_pivot))
 
 def karger_mincut(graph):
     trials = len(graph) ** 2
