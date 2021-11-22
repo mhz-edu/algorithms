@@ -1,4 +1,4 @@
-import random
+import random, copy
 
 def recursive_mult(x, y):
     half_x = int(len(x) / 2)
@@ -187,7 +187,52 @@ def randomized_select(l, order):
         else:
              return randomized_select(greater_pivot, order)
 
-randomized_select([3,8,2,5,1,4,7,6], 2)
+def karger_mincut(graph):
+    trials = len(graph) ** 2
+    min_cut_length = len(graph)
+    for t in range(trials):
+        trial_graph = copy.deepcopy(graph)
+        random.seed(t)
+        min_cut(trial_graph)
+        if len(trial_graph[list(trial_graph)[0]]) < min_cut_length:
+            min_cut_length = len(trial_graph[list(trial_graph)[0]])
+            cut = trial_graph
+    return cut
+        
+def min_cut(trial_graph):
+    while (len(trial_graph)>2):
+            node = random.choice(list(trial_graph))
+            edge = (node, random.choice(trial_graph[node]))
+            merge_nodes(trial_graph, edge)
+            remove_loops(trial_graph)
+    return trial_graph
+
+def merge_nodes(graph, edge):
+    graph[edge[0]] = graph[edge[0]] + graph[edge[1]]
+    graph[edge[0]].remove(edge[0])
+    graph[edge[0]].remove(edge[1])
+    del graph[edge[1]]
+    if (edge[0] in graph[edge[0]] and edge[1] in graph[edge[0]]):
+        graph[edge[0]].remove(edge[1])
+    for key in graph.keys():
+        while (graph[key].count(edge[1]) > 0):
+            graph[key].remove(edge[1])
+            graph[key].append(edge[0])
+
+def remove_loops(graph):
+    for node in graph.keys():
+       while (graph[node].count(node) > 0):
+            graph[node].remove(node)
+
+
+
+def load_graph(path):
+    out = {}
+    with open(path, 'r') as f:
+        for line in f:
+            numbers = [int(n) for n in line.split('\t') if n.isnumeric()]
+            out[numbers[0]] = numbers[1:]
+    return out
 
 
 def load_list(path):
